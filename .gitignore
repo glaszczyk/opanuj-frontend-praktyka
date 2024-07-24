@@ -12,3 +12,5 @@ node_modules
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/dictionaries/user.xml
 /.idea/vcs.xml
+/.idea/jsLinters/eslint.xml
+/.idea/prettier.xml
