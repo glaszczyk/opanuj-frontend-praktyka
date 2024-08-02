@@ -1,79 +1,69 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  BehaviorSubject,
-  Observable,
-  combineLatest,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { effect, Injectable, signal } from '@angular/core';
 import { Character } from '../types/Character';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CharacterSearchService {
-  private charactersSource$: Observable<Character[]> = new Observable<
-    Character[]
-  >();
-  characters: Signal<Character[]> = signal([]);
-  private nameSubject = new BehaviorSubject<string>('');
-  private genderSubject = new BehaviorSubject<string>('');
-  private sortOptionSubject = new BehaviorSubject<string>('');
+  private charactersSource$ = signal<Character[]>([]);
+  characters = signal<Character[]>([]);
+  private nameValue = signal('');
+  private genderValue = signal('');
+  private sortOptionValue = signal('');
   private apiBaseUrl = 'https://rickandmortyapi.com/api/character/';
 
   constructor(private http: HttpClient) {
-    this.charactersSource$ = combineLatest([
-      this.nameSubject,
-      this.genderSubject,
-    ]).pipe(
-      switchMap(([name, gender]) => {
-        if (name !== '' || gender !== '') {
-          return this.http
-            .get<{ results: Character[] }>(
-              `${this.apiBaseUrl}?name=${name}&gender=${gender}`
-            )
-            .pipe(map((response) => response.results || []));
-        } else {
-          return of([]);
-        }
-      })
-    );
+    effect(() => {
+      this.fetchCharacters();
+    }, {allowSignalWrites: true});
 
-    this.characters = toSignal(
-      combineLatest([this.charactersSource$, this.sortOptionSubject]).pipe(
-        map(([characters, sortOption]) =>
-          this.sortCharacters(characters, sortOption)
+    effect(() => {
+      const sortOption = this.sortOptionValue();
+      const characters = this.charactersSource$();
+      const result = this.sortCharacters(characters, sortOption);
+      this.characters.set(result);
+    }, {allowSignalWrites: true});
+  }
+
+  fetchCharacters() {
+    const name = this.name;
+    const gender = this.gender;
+    if (name !== '' || gender !== '') {
+      this.http
+        .get<{ results: Character[] }>(
+          `${this.apiBaseUrl}?name=${name}&gender=${gender}`
         )
-      ),
-      { initialValue: [] }
-    );
+        .subscribe((response) => {
+          this.charactersSource$.set(response.results || []);
+        });
+    } else {
+      this.charactersSource$.set([]);
+    }
   }
 
   setName(name: string) {
-    this.nameSubject.next(name);
+    this.nameValue.set(name);
   }
 
   setGender(gender: string) {
-    this.genderSubject.next(gender);
+    this.genderValue.set(gender);
   }
 
   setSortOption(sortOption: string) {
-    this.sortOptionSubject.next(sortOption);
+    this.sortOptionValue.set(sortOption);
   }
 
   get name(): string {
-    return this.nameSubject.value;
+    return this.nameValue();
   }
 
   get gender(): string {
-    return this.genderSubject.value;
+    return this.genderValue();
   }
 
   get sortOption(): string {
-    return this.sortOptionSubject.value;
+    return this.sortOptionValue();
   }
 
   sortCharacters(characters: Character[], sortOption: string): Character[] {
