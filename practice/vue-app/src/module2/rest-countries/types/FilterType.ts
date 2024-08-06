@@ -1,0 +1,1 @@
+export type FilterType = 'none' | 'currency' |  'lang' | 'capital' | 'name'
