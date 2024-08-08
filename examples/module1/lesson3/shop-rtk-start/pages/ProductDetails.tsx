@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { CartContext } from '../contexts/CartContext';
+import { useAppDispatch } from '../hooks/rtk.ts';
+import { addToCart } from '../state/cartSlice';
 import { ProductContext } from '../contexts/ProductContext';
 
 const ProductDetails = () => {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { addToCart } = useContext(CartContext);
   const { products } = useContext(ProductContext);
 
   const product = products.find((item) => {
@@ -37,7 +38,7 @@ const ProductDetails = () => {
             </div>
             <p className="mb-8">{description}</p>
             <button
-              onClick={() => addToCart(product)}
+              onClick={() => dispatch(addToCart(product))}
               className="bg-green-600 py-4 px-8 text-white"
             >
               Add to cart
