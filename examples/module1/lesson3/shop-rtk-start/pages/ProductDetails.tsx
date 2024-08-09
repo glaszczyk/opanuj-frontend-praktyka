@@ -1,15 +1,14 @@
-import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/rtk.ts';
 import { addToCart } from '../state/cartSlice';
-import { ProductContext } from '../contexts/ProductContext';
+import { useGetProductsQuery } from '../services/products.ts';
 
 const ProductDetails = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { products } = useContext(ProductContext);
+  const { data } = useGetProductsQuery();
 
-  const product = products.find((item) => {
+  const product = data?.find((item) => {
     return item.id === parseInt(id!);
   });
 
