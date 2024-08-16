@@ -1,12 +1,9 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { useContext } from 'react';
 import { BsBag } from 'react-icons/bs';
 import { CiShop } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
-
-interface HeaderProps {
-  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
-}
+import { SidebarContext } from '../contexts/SidebarContext';
 
 function ItemCounter() {
   const { itemAmount } = useContext(CartContext);
@@ -16,8 +13,8 @@ function ItemCounter() {
   </div>;
 }
 
-const Header = ({ setIsSidebarOpen }: HeaderProps) => {
-
+const Header = () => {
+const {setIsSidebarOpen} = useContext(SidebarContext);
   return (
     <header className={`bg-none py-6 fixed w-full z-10 lg:px-8 transition-all`}>
       <div className="container mx-auto flex items-center justify-between h-full">
