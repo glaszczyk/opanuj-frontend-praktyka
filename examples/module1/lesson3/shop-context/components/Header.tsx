@@ -3,14 +3,18 @@ import { BsBag } from 'react-icons/bs';
 import { CiShop } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
+import { SidebarContext } from '../contexts/SidebarContext';
 
-interface HeaderProps {
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+function ItemCounter() {
+  const { itemAmount } = useContext(CartContext);
+  return <div
+    className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
+    {itemAmount}
+  </div>;
 }
 
-const Header = ({ setIsSidebarOpen }: HeaderProps) => {
-  const { itemAmount } = useContext(CartContext);
-
+const Header = () => {
+const {setIsSidebarOpen} = useContext(SidebarContext);
   return (
     <header className={`bg-none py-6 fixed w-full z-10 lg:px-8 transition-all`}>
       <div className="container mx-auto flex items-center justify-between h-full">
@@ -22,9 +26,7 @@ const Header = ({ setIsSidebarOpen }: HeaderProps) => {
           className="cursor-pointer flex relative mr-8"
         >
           <BsBag className="text-2xl" />
-          <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
-            {itemAmount}
-          </div>
+          <ItemCounter />
         </div>
       </div>
     </header>

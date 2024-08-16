@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { Product } from '../types/Product';
 
 type CartItem = Product & { amount: number };
@@ -17,7 +17,7 @@ export const CartContext = createContext<CartContextType>(
   {} as CartContextType // typescript hack to avoid initializing context with undefined, use this context only with a provider
 );
 
-const CartProvider = ({ children }: { children: React.ReactNode }) => {
+const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [itemAmount, setItemAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);

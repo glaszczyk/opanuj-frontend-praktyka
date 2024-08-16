@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { Product } from '../types/Product';
 
 type ProductContextType = {
@@ -9,7 +9,7 @@ export const ProductContext = createContext<ProductContextType>({
   products: [],
 });
 
-const ProductProvider = ({ children }: { children: React.ReactNode }) => {
+const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {

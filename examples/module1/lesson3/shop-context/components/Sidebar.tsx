@@ -6,16 +6,12 @@ import { FiTrash2 } from 'react-icons/fi';
 import { IoMdClose } from 'react-icons/io';
 
 import { CartContext } from '../contexts/CartContext';
+import { SidebarContext } from '../contexts/SidebarContext.tsx';
 import CartItem from './CartItem';
 
-interface SidebarProps {
-  isSidebarOpen: boolean;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
+const Sidebar = () => {
   const { cart, clearCart, itemAmount, total } = useContext(CartContext);
-
+const {isSidebarOpen, setIsSidebarOpen} = useContext(SidebarContext);
   return (
     <div
       className={`${
