@@ -18,10 +18,10 @@ import { CharacterSearchService } from '../../services/character-search.service'
     SortSelectComponent,
     CharacterListComponent,
     CharacterCardComponent,
-    CommonModule,
+    CommonModule
   ],
   templateUrl: './character-search-container.component.html',
-  styleUrl: './character-search-container.component.scss',
+  styleUrl: './character-search-container.component.scss'
 })
 export class CharacterSearchContainerComponent {
   showRickOnly = signal(false);
