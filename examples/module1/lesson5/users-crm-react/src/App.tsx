@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UsersList from './components/UsersList';
 import StatusStats from './components/StatusStats';
 import AddUserDialog from './components/AddUserDialog';
+import { useUsers } from './hooks/useUsers.ts';
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { users, loading, error, fetchUsers } = useUsers();
+  const [userAddedWithSuccess, setUserAddedWithSuccess] = useState(false);
+
+  useEffect(() => {
+    if (userAddedWithSuccess) {
+      fetchUsers();
+      setUserAddedWithSuccess(false);
+    }
+  }, [userAddedWithSuccess]);
+
+  if (loading) return <div>Loading users...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -31,12 +44,13 @@ function App() {
         </button>
       </div>
 
-      <StatusStats />
-      <UsersList />
+      <StatusStats users={users} error={error} loading={loading} />
+      <UsersList users={users} error={error} loading={loading} />
 
       <AddUserDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
+        onUserAdded={() => setUserAddedWithSuccess(true)}
       />
     </main>
   );

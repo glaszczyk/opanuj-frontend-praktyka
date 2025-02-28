@@ -1,29 +1,14 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { User } from '../model/User';
 import { getStatusColor } from '../utils/statusColors';
 
-const StatusStats = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type StatusStatsProps = {
+  users: User[];
+  loading: boolean;
+  error: string | null;
+};
 
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/data/users');
-      if (!response.ok) throw new Error('Failed to fetch users');
-      const data = await response.json();
-      setUsers(data);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
+const StatusStats = ({ users, error, loading }: StatusStatsProps) => {
   const statusCounts = useMemo(() => {
     return users.reduce((acc: Record<string, number>, user: User) => {
       acc[user.status] = (acc[user.status] || 0) + 1;
