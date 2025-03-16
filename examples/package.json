@@ -14,6 +14,7 @@
     "test:e2e:ui": "npx playwright install && npx playwright test --ui",
     "lint:e2e": "npx eslint **/{tests,pages,mocks}/**"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/przeprogramowani/opanuj-frontend-praktyka.git"
