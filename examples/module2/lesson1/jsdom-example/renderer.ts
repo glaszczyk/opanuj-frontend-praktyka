@@ -1,8 +1,8 @@
 function filterUsers(users: User[]): User[] {
-  const userRole = localStorage.getItem('userRole');
+  const viewerRole = localStorage.getItem('userRole');
 
   const allowedUsers = users.filter((user) => {
-    if (userRole === 'admin') {
+    if (viewerRole === 'admin') {
       return true;
     }
 
@@ -12,19 +12,20 @@ function filterUsers(users: User[]): User[] {
   return allowedUsers;
 }
 
+const displayUser = (user: User) => {
+  if (user.role === 'admin') {
+    `<li>'(Admin)' Name: ${user.name}, Age: ${user.age}</li>`;
+  }
+
+  return `<li>Name: ${user.name}, Age: ${user.age}</li>`;
+};
+
 export function renderItems(container: HTMLElement, users: User[]): void {
   const allowedUsers = filterUsers(users);
 
   container.innerHTML = `
     <ul>
-      ${allowedUsers
-        .map(
-          (user) =>
-            `<li>${user.role === 'admin' && '(Admin)'} Name: ${
-              user.name
-            }, Age: ${user.age}</li>`
-        )
-        .join('')}
+      ${allowedUsers.map(displayUser).join('')}
     </ul>
   `;
 }

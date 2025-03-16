@@ -15,7 +15,13 @@ describe('User renderer', () => {
 
     const container = document.createElement('div');
     renderItems(container, users);
-    expect(Array.from(container.querySelectorAll('li'))).toHaveLength(3);
+    const items = Array.from(container.querySelectorAll('li'));
+    const listItems = container.querySelectorAll('li');
+
+    expect(items).toHaveLength(3);
+    expect(listItems).contains(/name: john, age: 30/);
+    expect(listItems).contains(/(admin) name: jane, age: 25/);
+    expect(listItems).contains(/name: jack, age: 40/);
   });
 
   test('should render only regular users if non-admin is rendering the list', () => {
@@ -23,6 +29,11 @@ describe('User renderer', () => {
 
     const container = document.createElement('div');
     renderItems(container, users);
-    expect(Array.from(container.querySelectorAll('li'))).toHaveLength(2);
+    const items = Array.from(container.querySelectorAll('li'));
+    const listItems = container.querySelectorAll('li');
+
+    expect(items).toHaveLength(2);
+    expect(listItems).contains(/name: john, age: 30/);
+    expect(listItems).contains(/name: jack, age: 40/);
   });
 });
