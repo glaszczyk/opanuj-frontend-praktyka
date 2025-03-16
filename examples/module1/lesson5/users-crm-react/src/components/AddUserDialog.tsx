@@ -3,9 +3,14 @@ import { useState } from 'react';
 interface AddUserDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onUserAdded: (withSuccess: boolean) => void;
 }
 
-const AddUserDialog = ({ isOpen, onClose }: AddUserDialogProps) => {
+const AddUserDialog = ({
+  isOpen,
+  onClose,
+  onUserAdded,
+}: AddUserDialogProps) => {
   const [name, setName] = useState('');
   const [status, setStatus] = useState('New');
   const [loading, setLoading] = useState(false);
@@ -41,7 +46,9 @@ const AddUserDialog = ({ isOpen, onClose }: AddUserDialogProps) => {
       });
 
       if (!response.ok) throw new Error('Failed to add user');
-
+      else {
+        onUserAdded(true);
+      }
       closeDialog();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to add user');
