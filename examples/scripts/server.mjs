@@ -11,7 +11,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { getProjectPath } from './utils.mjs';
 import { configureExpressApp } from './vite-api.mjs';
 
-const API_ROOT = 'http://localhost:3000/api/data';
+const API_ROOT = 'http://localhost:3001/api/data';
 
 export async function startServer(projectName, port, debug = false) {
   const projectPath = await getProjectPath(projectName);
